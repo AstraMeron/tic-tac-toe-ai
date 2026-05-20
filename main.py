@@ -1,23 +1,24 @@
 from game import TicTacToe
+from minimax import best_move
 
 game = TicTacToe()
 
-current_player = "X"
-
 while True:
+
+    # Human turn
     game.print_board()
 
-    move = int(input(f"Player {current_player}, enter position (0-8): "))
+    move = int(input("Enter your move (0-8): "))
 
     if move not in game.available_moves():
-        print("Invalid move! Try again.")
+        print("Invalid move!")
         continue
 
-    game.make_move(move, current_player)
+    game.make_move(move, "X")
 
-    if game.check_winner(current_player):
+    if game.check_winner("X"):
         game.print_board()
-        print(f"Player {current_player} wins!")
+        print("You win!")
         break
 
     if game.is_draw():
@@ -25,4 +26,19 @@ while True:
         print("It's a draw!")
         break
 
-    current_player = "O" if current_player == "X" else "X"
+    # AI turn
+    ai_move = best_move(game)
+
+    game.make_move(ai_move, "O")
+
+    print(f"AI chooses position {ai_move}")
+
+    if game.check_winner("O"):
+        game.print_board()
+        print("AI wins!")
+        break
+
+    if game.is_draw():
+        game.print_board()
+        print("It's a draw!")
+        break
